@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import io.king.hiltwithretrofit.R
@@ -35,11 +36,11 @@ class MovieFragment : Fragment() {
     ): View? {
         binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
         return  binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.apply {
             prgBarMovies.visibility= View.VISIBLE
             apiRepository.getPopularMoviesList(1).enqueue(object : Callback<MoviesListResponse>{
@@ -47,6 +48,7 @@ class MovieFragment : Fragment() {
                     call: Call<MoviesListResponse>,
                     response: Response<MoviesListResponse>
                 ) {
+                    println(response)
                     prgBarMovies.visibility= View.GONE
                     when(response.code()){
                         200 -> {
@@ -57,24 +59,24 @@ class MovieFragment : Fragment() {
                                         layoutManager = LinearLayoutManager(requireContext())
                                         adapter = moviesAdapter
                                     }
-//                                    moviesAdapter.setOnItemClickListener {
-//                                        val direction = MovieDetailFragment.actionMoviesFragmentToMovieDetailsFragment(it.id)
-//                                        findNavController().navigate(direction)
-//                                    }
+                                    moviesAdapter.setOnItemClickListener {
+                                        val direction = MovieFragmentDirections.actionMovieFragmentFragmentToMovieDetailFragment(it.id)
+                                        findNavController().navigate(direction)
+                                    }
                                 }
                             }
                         }
                         400 -> {
-                            Log.d("Response Code", " Client error responses : ${response.code()}")
+                            Log.d("Response Code 400", " Client error responses : ${response.code()}")
                         }
-                        401 -> {Log.d("Response Code", " Client error responses : ${response.code()}")
+                        401 -> {Log.d("Response Code401", " Client error responses : ${response.code()}")
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<MoviesListResponse>, t: Throwable) {
-                    prgBarMovies.visibility= View.VISIBLE
-                    Log.d("Response Code", " Client error responses : ${t.message}")
+                    prgBarMovies.visibility= View.GONE
+                    Log.d("Response Code F", " Client error responses : ${t.message}")
                 }
 
             })

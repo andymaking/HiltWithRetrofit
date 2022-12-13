@@ -9,7 +9,7 @@
         android:id="@+id/movieFragmentFragment"
         android:name="io.king.hiltwithretrofit.ui.MovieFragment"
         android:label="fragment_movie_fragment"
-        tools:layout="@layout/fragment_movie_fragment" >
+        tools:layout="@layout/fragment_movies" >
         <action
             android:id="@+id/action_movieFragmentFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
@@ -18,7 +18,7 @@
         android:id="@+id/movieDetailFragment"
         android:name="io.king.hiltwithretrofit.ui.MovieDetailFragment"
         android:label="fragment_movie_detail"
-        tools:layout="@layout/fragment_movie_detail" >
+        tools:layout="@layout/fragment_movie_detailes" >
         <argument
             android:name="movieId"
             app:argType="integer" />
